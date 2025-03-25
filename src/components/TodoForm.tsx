@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { addTodo } from '@/lib/mongodb';
+import { addTodo } from '@/lib/localStorage';
 import { toast } from '@/hooks/use-toast';
 import { PlusIcon } from 'lucide-react';
 
@@ -28,15 +28,13 @@ const TodoForm = ({ onAddSuccess }: TodoFormProps) => {
     
     setIsSubmitting(true);
     try {
-      const result = await addTodo(text);
-      if (result) {
-        setText('');
-        toast({
-          title: "Success",
-          description: "Todo added successfully",
-        });
-        onAddSuccess();
-      }
+      addTodo(text);
+      setText('');
+      toast({
+        title: "Success",
+        description: "Todo added successfully",
+      });
+      onAddSuccess();
     } finally {
       setIsSubmitting(false);
     }

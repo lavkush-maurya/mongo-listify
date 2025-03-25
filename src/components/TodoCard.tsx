@@ -5,7 +5,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CheckIcon, PencilIcon, TrashIcon, XIcon } from 'lucide-react';
-import { Todo, updateTodo, deleteTodo } from '@/lib/mongodb';
+import { Todo } from '@/lib/mongodb';
+import { updateTodo, deleteTodo } from '@/lib/localStorage';
 import { cn } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
 
@@ -24,7 +25,7 @@ const TodoCard = ({ todo, onUpdate, onDelete }: TodoCardProps) => {
   const handleToggleComplete = async () => {
     setIsUpdating(true);
     try {
-      await updateTodo(todo._id as string, { completed: !todo.completed });
+      updateTodo(todo._id as string, { completed: !todo.completed });
       onUpdate();
     } finally {
       setIsUpdating(false);
@@ -43,7 +44,7 @@ const TodoCard = ({ todo, onUpdate, onDelete }: TodoCardProps) => {
     
     setIsUpdating(true);
     try {
-      await updateTodo(todo._id as string, { text: editText });
+      updateTodo(todo._id as string, { text: editText });
       setIsEditing(false);
       onUpdate();
     } finally {
@@ -54,7 +55,7 @@ const TodoCard = ({ todo, onUpdate, onDelete }: TodoCardProps) => {
   const handleDelete = async () => {
     setIsDeleting(true);
     try {
-      await deleteTodo(todo._id as string);
+      deleteTodo(todo._id as string);
       onDelete();
       toast({
         title: "Success",

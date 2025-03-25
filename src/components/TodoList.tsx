@@ -1,7 +1,8 @@
 
 import { useState, useEffect } from 'react';
 import TodoCard from './TodoCard';
-import { Todo, fetchTodos } from '@/lib/mongodb';
+import { Todo } from '@/lib/mongodb';
+import { getTodos } from '@/lib/localStorage';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { toast } from '@/hooks/use-toast';
@@ -11,10 +12,10 @@ const TodoList = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
 
-  const loadTodos = async () => {
+  const loadTodos = () => {
     setIsLoading(true);
     try {
-      const data = await fetchTodos();
+      const data = getTodos();
       setTodos(data);
     } catch (error) {
       console.error('Error loading todos:', error);
