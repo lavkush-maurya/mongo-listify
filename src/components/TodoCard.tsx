@@ -1,12 +1,10 @@
-
 import { useState } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CheckIcon, PencilIcon, TrashIcon, XIcon } from 'lucide-react';
-import { Todo } from '@/lib/mongodb';
-import { updateTodo, deleteTodo } from '@/lib/localStorage';
+import { Todo, updateTodo, deleteTodo } from '@/lib/localStorage';
 import { cn } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
 

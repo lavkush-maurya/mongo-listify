@@ -1,5 +1,10 @@
 
-import { Todo } from './mongodb';
+export interface Todo {
+  _id: string;
+  text: string;
+  completed: boolean;
+  createdAt: string;
+}
 
 const TODOS_STORAGE_KEY = 'todos';
 

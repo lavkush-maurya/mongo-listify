@@ -1,8 +1,6 @@
-
 import { useState, useEffect } from 'react';
 import TodoCard from './TodoCard';
-import { Todo } from '@/lib/mongodb';
-import { getTodos } from '@/lib/localStorage';
+import { Todo, getTodos } from '@/lib/localStorage';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { toast } from '@/hooks/use-toast';
