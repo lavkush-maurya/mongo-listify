@@ -1,9 +1,11 @@
+
 import { useState, useEffect } from 'react';
 import TodoCard from './TodoCard';
 import { Todo, getTodos } from '@/lib/localStorage';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { toast } from '@/hooks/use-toast';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const TodoList = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -50,12 +52,17 @@ const TodoList = () => {
   return (
     <div className="w-full max-w-md mx-auto space-y-6 transition-all duration-300">
       {todos.length > 0 && (
-        <div className="flex justify-center gap-2">
+        <motion.div 
+          className="flex justify-center gap-2"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
           <Button
             variant={filter === 'all' ? 'default' : 'outline'}
             size="sm"
             onClick={() => setFilter('all')}
-            className="transition-all duration-200"
+            className="transition-all duration-200 bg-opacity-90"
           >
             All
           </Button>
@@ -63,7 +70,7 @@ const TodoList = () => {
             variant={filter === 'active' ? 'default' : 'outline'}
             size="sm"
             onClick={() => setFilter('active')}
-            className="transition-all duration-200"
+            className="transition-all duration-200 bg-opacity-90"
           >
             Active
           </Button>
@@ -71,44 +78,63 @@ const TodoList = () => {
             variant={filter === 'completed' ? 'default' : 'outline'}
             size="sm"
             onClick={() => setFilter('completed')}
-            className="transition-all duration-200"
+            className="transition-all duration-200 bg-opacity-90"
           >
             Completed
           </Button>
-        </div>
+        </motion.div>
       )}
       
       {isLoading ? (
         <div className="flex justify-center py-8">
           <div className="h-6 w-6 animate-spin rounded-full border-b-2 border-accent"></div>
         </div>
-      ) : filteredTodos.length > 0 ? (
-        <div className="space-y-3">
-          {filteredTodos.map((todo) => (
-            <TodoCard
-              key={todo._id}
-              todo={todo}
-              onUpdate={handleUpdate}
-              onDelete={handleDelete}
-            />
-          ))}
-        </div>
       ) : (
-        <div className="text-center py-8 text-muted-foreground animate-fade-in">
-          {todos.length === 0 ? (
-            <p>Add your first todo to get started</p>
+        <AnimatePresence>
+          {filteredTodos.length > 0 ? (
+            <motion.div 
+              className="space-y-3"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              {filteredTodos.map((todo) => (
+                <TodoCard
+                  key={todo._id}
+                  todo={todo}
+                  onUpdate={handleUpdate}
+                  onDelete={handleDelete}
+                />
+              ))}
+            </motion.div>
           ) : (
-            <p>No {filter !== 'all' ? filter : ''} todos found</p>
+            <motion.div 
+              className="text-center py-8 text-muted-foreground"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              {todos.length === 0 ? (
+                <p>Add your first todo to get started</p>
+              ) : (
+                <p>No {filter !== 'all' ? filter : ''} todos found</p>
+              )}
+            </motion.div>
           )}
-        </div>
+        </AnimatePresence>
       )}
       
       {todos.length > 0 && (
         <>
           <Separator className="my-4" />
-          <div className="text-sm text-muted-foreground text-center animate-fade-in">
+          <motion.div 
+            className="text-sm text-muted-foreground text-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+          >
             {activeTodoCount} {activeTodoCount === 1 ? 'item' : 'items'} left
-          </div>
+          </motion.div>
         </>
       )}
     </div>
